@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@heroicons/react": "^2.0.18",
+    "@heroicons/react": "2.0.18",
     "firebase": "10.7.0",
     "next": "14.0.3",
     "react": "18.2.0",
@@ -19,7 +19,6 @@
     "@types/node": "20.10.0",
     "@types/react": "18.2.39",
     "@types/react-dom": "18.2.17",
-    "@types/firebase": "3.2.1",
     "autoprefixer": "10.4.16",
     "eslint": "8.54.0",
     "eslint-config-next": "14.0.3",
