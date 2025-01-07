@@ -1,8 +1,11 @@
-'use client';
 import React from 'react';
-import { AuthProvider } from '@/contexts/AuthContext';
-import { NoteProvider } from '@/contexts/NoteContext';
+import ClientLayout from '@/components/ClientLayout';
 import './globals.css';
+
+export const metadata = {
+  title: '在线笔记',
+  description: '一个简单的在线笔记应用',
+};
 
 export default function RootLayout({
   children,
@@ -12,11 +15,11 @@ export default function RootLayout({
   return (
     <html lang="zh">
       <body>
-        <AuthProvider>
-          <NoteProvider>
+        <div id="app">
+          <ClientLayout>
             {children}
-          </NoteProvider>
-        </AuthProvider>
+          </ClientLayout>
+        </div>
       </body>
     </html>
   );

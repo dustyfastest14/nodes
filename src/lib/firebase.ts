@@ -1,17 +1,18 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp, getApps } from '@firebase/app';
+import { getAuth } from '@firebase/auth';
+import { getFirestore } from '@firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDh6jOnzWmqjgsi0Y65cK9daYoA5HUztyA",
-  authDomain: "nodes-6ca6a.firebaseapp.com",
-  projectId: "nodes-6ca6a",
-  storageBucket: "nodes-6ca6a.firebasestorage.app",
-  messagingSenderId: "273583899694",
-  appId: "1:273583899694:web:9978248a315a8d27eacbbf",
-  measurementId: "G-Z2H7D0D492"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-const app = initializeApp(firebaseConfig);
+// 初始化 Firebase
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
 export const auth = getAuth(app);
 export const db = getFirestore(app); 

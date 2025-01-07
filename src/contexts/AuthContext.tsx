@@ -1,10 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { 
-  User,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut as firebaseSignOut
-} from 'firebase/auth';
+'use client';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { User, onAuthStateChanged, signInWithEmailAndPassword, signOut as firebaseSignOut } from '@firebase/auth';
 import { auth } from '@/lib/firebase';
 
 interface AuthContextType {
@@ -26,7 +22,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     });
 
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
 
   const signIn = async (email: string, password: string) => {

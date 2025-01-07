@@ -1,5 +1,6 @@
+'use client';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, onSnapshot } from '@firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Note } from '@/types/note';
 import { useAuth } from './AuthContext';
