@@ -1,6 +1,6 @@
-import { initializeApp, getApps } from '@firebase/app';
-import { getAuth } from '@firebase/auth';
-import { getFirestore } from '@firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -13,6 +13,12 @@ const firebaseConfig = {
 };
 
 // 初始化 Firebase
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+let app;
+try {
+  app = initializeApp(firebaseConfig);
+} catch (error) {
+  console.error('Firebase initialization error', error);
+}
+
 export const auth = getAuth(app);
 export const db = getFirestore(app); 
