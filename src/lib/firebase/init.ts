@@ -1,4 +1,4 @@
-import { getApps, initializeApp } from 'firebase/app';
+import { getApps, initializeApp, FirebaseApp } from 'firebase/app';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -10,9 +10,11 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-export function initFirebase() {
-  if (!getApps().length) {
-    return initializeApp(firebaseConfig);
+let firebaseApp: FirebaseApp | undefined;
+
+export function initFirebase(): FirebaseApp {
+  if (!firebaseApp) {
+    firebaseApp = initializeApp(firebaseConfig);
   }
-  return getApps()[0];
+  return firebaseApp;
 } 

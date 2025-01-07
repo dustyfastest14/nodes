@@ -1,7 +1,11 @@
-import { getAuth } from 'firebase/auth';
+import { getAuth, Auth } from 'firebase/auth';
 import { initFirebase } from './init';
 
-export function getFirebaseAuth() {
-  const app = initFirebase();
-  return getAuth(app);
+let auth: Auth | undefined;
+
+export function getFirebaseAuth(): Auth {
+  if (!auth) {
+    auth = getAuth(initFirebase());
+  }
+  return auth;
 } 
