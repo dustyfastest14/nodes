@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { getFirebaseFirestore } from '@/lib/firebase/firestore';
 import { Note } from '@/types/note';
 import { useAuth } from './AuthContext';
 
@@ -18,6 +18,7 @@ export function NoteProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
+  const db = getFirebaseFirestore();
 
   useEffect(() => {
     if (!user) {
@@ -47,7 +48,7 @@ export function NoteProvider({ children }: { children: ReactNode }) {
     );
 
     return () => unsubscribe();
-  }, [user]);
+  }, [user, db]);
 
   return (
     <NoteContext.Provider value={{ notes, loading, error }}>
