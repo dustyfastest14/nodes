@@ -1,56 +1,57 @@
 'use client';
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
-import { db } from '@/lib/firebase-config';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Note } from '@/types/note';
-import { useAuth } from './AuthContext';
 
 interface NoteContextType {
   notes: Note[];
-  loading: boolean;
-  error: string | null;
+  addNote: (title: string, content: string) => void;
+  updateNote: (id: string, title: string, content: string) => void;
+  deleteNote: (id: string) => void;
 }
 
 const NoteContext = createContext<NoteContextType | undefined>(undefined);
 
 export function NoteProvider({ children }: { children: ReactNode }) {
   const [notes, setNotes] = useState<Note[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const { user } = useAuth();
 
+  // 从本地存储加载笔记
   useEffect(() => {
-    if (!user) {
-      setNotes([]);
-      setLoading(false);
-      return;
+    const savedNotes = localStorage.getItem('notes');
+    if (savedNotes) {
+      setNotes(JSON.parse(savedNotes));
     }
+  }, []);
 
-    const q = query(
-      collection(db, 'notes'),
-      where('userId', '==', user.uid)
-    );
+  // 保存笔记到本地存储
+  useEffect(() => {
+    localStorage.setItem('notes', JSON.stringify(notes));
+  }, [notes]);
 
-    const unsubscribe = onSnapshot(q, 
-      (snapshot) => {
-        const noteList: Note[] = [];
-        snapshot.forEach((doc) => {
-          noteList.push({ id: doc.id, ...doc.data() } as Note);
-        });
-        setNotes(noteList);
-        setLoading(false);
-      },
-      (error) => {
-        setError(error.message);
-        setLoading(false);
-      }
-    );
+  const addNote = (title: string, content: string) => {
+    const newNote: Note = {
+      id: Date.now().toString(),
+      title,
+      content,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    setNotes([newNote, ...notes]);
+  };
 
-    return () => unsubscribe();
-  }, [user, db]);
+  const updateNote = (id: string, title: string, content: string) => {
+    setNotes(notes.map(note => 
+      note.id === id 
+        ? { ...note, title, content, updatedAt: new Date().toISOString() }
+        : note
+    ));
+  };
+
+  const deleteNote = (id: string) => {
+    setNotes(notes.filter(note => note.id !== id));
+  };
 
   return (
-    <NoteContext.Provider value={{ notes, loading, error }}>
+    <NoteContext.Provider value={{ notes, addNote, updateNote, deleteNote }}>
       {children}
     </NoteContext.Provider>
   );

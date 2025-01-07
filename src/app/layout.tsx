@@ -1,5 +1,6 @@
 import React from 'react';
-import ClientLayout from '@/components/ClientLayout';
+import { NoteProvider } from '@/contexts/NoteContext';
+import { PasswordProvider } from '@/contexts/PasswordContext';
 import './globals.css';
 
 export const metadata = {
@@ -15,11 +16,11 @@ export default function RootLayout({
   return (
     <html lang="zh">
       <body>
-        <div id="app">
-          <ClientLayout>
+        <PasswordProvider>
+          <NoteProvider>
             {children}
-          </ClientLayout>
-        </div>
+          </NoteProvider>
+        </PasswordProvider>
       </body>
     </html>
   );
