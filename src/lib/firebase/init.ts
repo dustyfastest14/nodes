@@ -10,11 +10,9 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-let firebaseApp: FirebaseApp | undefined;
-
 export function initFirebase(): FirebaseApp {
-  if (!firebaseApp) {
-    firebaseApp = initializeApp(firebaseConfig);
+  if (!getApps().length) {
+    return initializeApp(firebaseConfig);
   }
-  return firebaseApp;
+  return getApps()[0];
 } 
